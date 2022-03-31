@@ -35,4 +35,4 @@ wsServer.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(3000, handleListen);
+httpServer.listen(process.env.PORT || 3000, handleListen);
