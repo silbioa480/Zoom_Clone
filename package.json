@@ -2,9 +2,9 @@
   "name": "zoom_clone",
   "version": "1.0.0",
   "description": "Zoom Clone using NodeJS, WebRTC and Websockets.",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon"
+    "start": "nodemon"
   },
   "keywords": [],
   "author": "",
