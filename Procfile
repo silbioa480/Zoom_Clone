@@ -1,1 +1,1 @@
-worker: nodemon
+worker:nodemon
