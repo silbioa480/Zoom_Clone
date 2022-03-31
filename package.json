@@ -4,7 +4,7 @@
   "description": "Zoom Clone using NodeJS, WebRTC and Websockets.",
   "main": "src/server.js",
   "scripts": {
-    "start": "babel-node src/server.js"
+    "start": "nodemon"
   },
   "keywords": [],
   "author": "",

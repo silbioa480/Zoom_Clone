@@ -1,1 +1,1 @@
-worker:babel-node src/server.js
+worker:nodemon
