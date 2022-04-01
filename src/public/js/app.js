@@ -116,9 +116,7 @@ async function initCall() {
 async function handelWelcomeSubmit(event) {
   event.preventDefault();
   const input = welcomeForm.querySelector("input");
-  while (!myStream) {
-    await initCall();
-  }
+  await initCall();
   socket.emit("join_room", input.value);
   roomName = input.value;
   input.value = "";
