@@ -53,6 +53,7 @@ async function getMedia(deviceId) {
       deviceId ? cameraConstraints : initialConstraints
     );
 
+    console.log(myStream);
     myFace.srcObject = myStream;
     if (!deviceId) {
       await getCameras();
@@ -192,6 +193,6 @@ function handleIce(data) {
 
 function handleTrack(data) {
   const peerFace = document.getElementById("peerFace");
-  console.log(data.streams);
+  console.log(data.streams[0]);
   peerFace.srcObject = data.streams[0];
 }
