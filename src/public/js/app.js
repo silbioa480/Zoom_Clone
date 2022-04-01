@@ -192,5 +192,6 @@ function handleIce(data) {
 
 function handleTrack(data) {
   const peerFace = document.getElementById("peerFace");
+  console.log(data.streams);
   peerFace.srcObject = data.streams[0];
 }
