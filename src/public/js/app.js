@@ -193,6 +193,16 @@ function handleIce(data) {
 
 function handleTrack(data) {
   const peerFace = document.getElementById("peerFace");
+
+  const newVideo = document.createElement("video");
+  newVideo.srcObject = data.stream[0];
+  newVideo.autoplay = true;
+  newVideo.playsInline = true;
+  newVideo.width = 400;
+  newVideo.height = 400;
+
+  document.getElementById(myStream).appendChild(newVideo);
+
   peerFace.srcObject = data.streams[0];
   console.log(peerFace.srcObject);
 }
