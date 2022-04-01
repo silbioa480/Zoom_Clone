@@ -33,7 +33,9 @@ async function getCameras() {
 
       camerasSelect.appendChild(option);
     });
-  } catch (e) {}
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 async function getMedia(deviceId) {
@@ -55,7 +57,9 @@ async function getMedia(deviceId) {
     if (!deviceId) {
       await getCameras();
     }
-  } catch (e) {}
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 function handleMuteClick() {
@@ -131,8 +135,10 @@ socket.on("welcome", async () => {
   myDataChannel.addEventListener("message", (event) => {
     console.log(event.data);
   });
+  console.log("made data channel");
   const offer = await myPeerConnection.createOffer();
   await myPeerConnection.setLocalDescription(offer);
+  console.log("sent the offer");
   socket.emit("offer", offer, roomName);
 });
 
@@ -143,17 +149,21 @@ socket.on("offer", async (offer) => {
       console.log(event.data);
     });
   });
+  console.log("received the offer");
   await myPeerConnection.setRemoteDescription(offer);
   const answer = await myPeerConnection.createAnswer();
   await myPeerConnection.setLocalDescription(answer);
+  console.log("sent the answer");
   socket.emit("answer", answer, roomName);
 });
 
 socket.on("answer", (answer) => {
+  console.log("received the answer");
   myPeerConnection.setRemoteDescription(answer);
 });
 
 socket.on("ice", (ice) => {
+  console.log("received the candidate");
   myPeerConnection.addIceCandidate(ice);
 });
 
@@ -176,6 +186,7 @@ function makeConnection() {
 }
 
 function handleIce(data) {
+  console.log("sent candidate");
   socket.emit("ice", data.candidate, roomName);
 }
 
