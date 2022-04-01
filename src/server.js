@@ -11,8 +11,6 @@ app.use("/public", express.static(__dirname + "/public"));
 app.get("/", (req, res) => res.render("home"));
 app.get("/*", (req, res) => res.redirect("/"));
 
-const handleListen = () => console.log("Listening on http://localhost:3000");
-
 const httpServer = http.createServer(app);
 const wsServer = SocketIO(httpServer);
 
@@ -35,4 +33,5 @@ wsServer.on("connection", (socket) => {
   });
 });
 
+const handleListen = () => console.log("Listening on http://localhost:3000");
 httpServer.listen(process.env.PORT || 3000, handleListen);
