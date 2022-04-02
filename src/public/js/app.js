@@ -4,7 +4,6 @@ const myFace = document.getElementById("myFace");
 const muteBtn = document.getElementById("mute");
 const cameraBtn = document.getElementById("camera");
 const camerasSelect = document.getElementById("cameras");
-
 const call = document.getElementById("call");
 
 call.hidden = true;
@@ -68,12 +67,7 @@ function handleMuteClick() {
     .getAudioTracks()
     .forEach((track) => (track.enabled = !track.enabled));
 
-  if (!muted) {
-    muteBtn.innerText = "Unmute";
-  } else {
-    muteBtn.innerText = "Mute";
-  }
-
+  muteBtn.innerText = muted ? "Mute" : "Unmute";
   muted = !muted;
 }
 
@@ -82,12 +76,7 @@ function handleCameraClick() {
     .getVideoTracks()
     .forEach((track) => (track.enabled = !track.enabled));
 
-  if (cameraOff) {
-    cameraBtn.innerText = "Turn Camera Off";
-  } else {
-    cameraBtn.innerText = "Turn Camera On";
-  }
-
+  cameraBtn.innerText = cameraOff ? "Turn Camera Off" : "Turn Camera On";
   cameraOff = !cameraOff;
 }
 
@@ -104,9 +93,9 @@ async function handleCameraChange() {
 
 muteBtn.addEventListener("click", handleMuteClick);
 cameraBtn.addEventListener("click", handleCameraClick);
-camerasSelect.addEventListener("input", handleCameraChange);
+camerasSelect.addEventListener("change", handleCameraChange);
 
-// Welcome Form (choose a room)
+// Welcome Form (join a room)
 
 const welcome = document.getElementById("welcome");
 const welcomeForm = welcome.querySelector("form");
@@ -133,9 +122,7 @@ welcomeForm.addEventListener("submit", handelWelcomeSubmit);
 
 socket.on("welcome", async () => {
   myDataChannel = myPeerConnection.createDataChannel("chat");
-  myDataChannel.addEventListener("message", (event) => {
-    console.log(event.data);
-  });
+  myDataChannel.addEventListener("message", (event) => console.log(event.data));
   console.log("made data channel");
   const offer = await myPeerConnection.createOffer();
   await myPeerConnection.setLocalDescription(offer);
@@ -146,26 +133,26 @@ socket.on("welcome", async () => {
 socket.on("offer", async (offer) => {
   myPeerConnection.addEventListener("datachannel", (event) => {
     myDataChannel = event.channel;
-    myDataChannel.addEventListener("message", (event) => {
-      console.log(event.data);
-    });
+    myDataChannel.addEventListener("message", (event) =>
+      console.log(event.data)
+    );
   });
   console.log("received the offer");
   await myPeerConnection.setRemoteDescription(offer);
   const answer = await myPeerConnection.createAnswer();
   await myPeerConnection.setLocalDescription(answer);
-  console.log("sent the answer");
   socket.emit("answer", answer, roomName);
+  console.log("sent the answer");
 });
 
-socket.on("answer", (answer) => {
+socket.on("answer", async (answer) => {
   console.log("received the answer");
-  myPeerConnection.setRemoteDescription(answer);
+  await myPeerConnection.setRemoteDescription(answer);
 });
 
-socket.on("ice", (ice) => {
+socket.on("ice", async (ice) => {
   console.log("received the candidate");
-  myPeerConnection.addIceCandidate(ice);
+  await myPeerConnection.addIceCandidate(ice);
 });
 
 // RTC Code
@@ -182,7 +169,7 @@ function makeConnection() {
   myPeerConnection.addEventListener("icecandidate", handleIce);
   myPeerConnection.addEventListener("track", handleTrack);
   myStream
-    ?.getTracks()
+    .getTracks()
     .forEach((track) => myPeerConnection.addTrack(track, myStream));
 }
 
