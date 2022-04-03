@@ -183,11 +183,5 @@ function handleTrack(data) {
   if (!peerFace.srcObject) {
     peerFace.srcObject = data.streams[0];
     console.log(peerFace.srcObject);
-
-    const newVideo = document.createElement("video");
-    newVideo.autoplay = true;
-    newVideo.playsInline = true;
-    newVideo.srcObject = myStream;
-    call.appendChild(newVideo);
   }
 }
