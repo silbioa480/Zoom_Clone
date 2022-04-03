@@ -151,7 +151,6 @@ socket.on("answer", async (answer) => {
 });
 
 socket.on("ice", async (ice) => {
-  addPeerTrack();
   console.log("received the candidate");
   await myPeerConnection.addIceCandidate(ice);
 });
@@ -169,9 +168,6 @@ function makeConnection() {
   myPeerConnection = new RTCPeerConnection(peerConnectionConfig);
   myPeerConnection.addEventListener("icecandidate", handleIce);
   myPeerConnection.addEventListener("track", handleTrack);
-}
-
-function addPeerTrack() {
   myStream
     .getTracks()
     .forEach((track) => myPeerConnection.addTrack(track, myStream));
@@ -184,8 +180,6 @@ function handleIce(data) {
 
 function handleTrack(data) {
   const peerFace = document.getElementById("peerFace");
-  if (!peerFace.srcObject) {
-    peerFace.srcObject = data.streams[0];
-    console.log(peerFace.srcObject);
-  }
+  peerFace.srcObject = data.streams[0];
+  console.log(peerFace.srcObject);
 }
