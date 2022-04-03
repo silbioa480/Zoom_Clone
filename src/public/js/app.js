@@ -179,8 +179,16 @@ function handleIce(data) {
 }
 
 function handleTrack(data) {
+  const newVideo = document.createElement("video");
+  newVideo.autoplay = true;
+  newVideo.playsInline = true;
+  newVideo.srcObject = data.streams[0];
+
   const peerFace = document.getElementById("peerFace");
-  peerFace.srcObject = data.streams[0];
-  peerFace.src = URL.createObjectURL(data.streams[0]);
-  console.log(peerFace.srcObject);
+  if (!peerFace.srcObject) {
+    peerFace.srcObject = data.streams[0];
+    console.log(peerFace.srcObject);
+
+    call.appendChild(newVideo);
+  }
 }
